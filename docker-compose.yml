@@ -146,7 +146,9 @@ services:
         limits:
           memory: 128M
     environment:
-      - INTERNAL_API_HOST=airbyte-server:8001
+      - INTERNAL_API_HOST=server:8001
+      - CONNECTOR_BUILDER_API_HOST=server:8001
+      - AIRBYTE_API_HOST=server:8006
     networks:
       - airbyte_internal
     depends_on:
