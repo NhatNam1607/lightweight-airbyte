@@ -8,21 +8,7 @@ x-logging: &default-logging
 services:
   # hook in case we need to add init behavior
   # every root service (no depends_on) should depend on init
-  caddy:
-    container_name: caddy   
-    image: caddy:alpine
-    restart: always
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
-      - ./certs:/certs
-      - ./config:/config
-      - ./data:/data
-      - ./sites:/srv
-    ports:
-      - "18080:80"
-    networks:
-      - airbyte_internal
-    
+
   init:
     image: airbyte/init:${VERSION}
     logging: *default-logging
