@@ -1,0 +1,4 @@
+{$DOMAIN_NAME} {
+    reverse_proxy airbyte-proxy:8000
+    encode zstd gzip
+}

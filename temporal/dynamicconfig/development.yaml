@@ -1,0 +1,4 @@
+# Temporal dynamic config
+# This file can be used to override temporal's configuration on the fly.
+# Default values are usually fine for Airbyte.
+{}
