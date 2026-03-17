@@ -1,5 +1,8 @@
 :80 {
-    # Bỏ Basic Auth của Caddy để bạn dùng Basic Auth thẳng trên Dokploy cho nhanh
+    basicauth / {
+        {$BASIC_AUTH_USERNAME} {$BASIC_AUTH_PASSWORD_HASH}
+    }
+
     reverse_proxy webapp:80
     encode zstd gzip
 }

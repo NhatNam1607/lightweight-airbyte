@@ -15,6 +15,9 @@ services:
       - ./Caddyfile:/etc/caddy/Caddyfile
     ports:
       - "18080:80"
+    environment:
+      - BASIC_AUTH_USERNAME=${BASIC_AUTH_USERNAME}
+      - BASIC_AUTH_PASSWORD_HASH=${BASIC_AUTH_PASSWORD_HASH}
     networks:
       - airbyte_internal
 
