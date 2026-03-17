@@ -1,8 +1,11 @@
 :80 {
-    reverse_proxy airbyte-proxy:8000 {
-        header_up Host {host}
-        header_up X-Real-IP {remote_host}
-        header_up X-Forwarded-For {remote_host}
+    # Basic Auth cho quyền cá nhân
+    basicauth / {
+        {$BASIC_AUTH_USERNAME} {$BASIC_AUTH_PASSWORD_HASH}
     }
+
+    # Proxy vào giao diện web (cũng là cổng vào API nội bộ)
+    reverse_proxy webapp:80
+
     encode zstd gzip
 }
