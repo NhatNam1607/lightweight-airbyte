@@ -18,8 +18,6 @@ services:
       - ./config:/config
       - ./data:/data
       - ./sites:/srv
-    environment:
-      - DOMAIN_NAME=${DOMAIN_NAME}
     ports:
       - "80:80"
       - "443:443"
