@@ -55,11 +55,19 @@ services:
       - db:/var/lib/postgresql/data
     networks:
       - airbyte_internal
+    deploy:
+      resources:
+        limits:
+          memory: 256M
   worker:
     image: airbyte/worker:${VERSION}
     logging: *default-logging
     container_name: airbyte-worker
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
     environment:
       - ACTIVITY_INITIAL_DELAY_BETWEEN_ATTEMPTS_SECONDS=${ACTIVITY_INITIAL_DELAY_BETWEEN_ATTEMPTS_SECONDS}
       - ACTIVITY_MAX_ATTEMPT=${ACTIVITY_MAX_ATTEMPT}
@@ -137,6 +145,10 @@ services:
     logging: *default-logging
     container_name: airbyte-server
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
     environment:
       - AIRBYTE_ROLE=${AIRBYTE_ROLE:-}
       - AIRBYTE_VERSION=${VERSION}
@@ -194,6 +206,10 @@ services:
     logging: *default-logging
     container_name: airbyte-webapp
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 256M
     environment:
       - INTERNAL_API_HOST=${INTERNAL_API_HOST}
       - CONNECTOR_BUILDER_API_HOST=${CONNECTOR_BUILDER_API_HOST}
@@ -209,6 +225,10 @@ services:
     logging: *default-logging
     container_name: airbyte-temporal
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
     environment:
       - DB=postgresql
       - DB_PORT=${DATABASE_PORT}
@@ -226,6 +246,10 @@ services:
     logging: *default-logging
     container_name: airbyte-cron
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 256M
     environment:
       - AIRBYTE_VERSION=${VERSION}
       - CONFIGS_DATABASE_MINIMUM_FLYWAY_MIGRATION_VERSION=${CONFIGS_DATABASE_MINIMUM_FLYWAY_MIGRATION_VERSION}
@@ -253,41 +277,41 @@ services:
     depends_on:
       bootloader:
         condition: service_completed_successfully
-  airbyte-api-server:
-    image: airbyte/airbyte-api-server:${VERSION}
-    logging: *default-logging
-    container_name: airbyte-api-server
-    restart: unless-stopped
-    ports:
-      - "8006"
-    environment:
-      - AIRBYTE_VERSION=${VERSION}
-      - DEPLOYMENT_MODE=${DEPLOYMENT_MODE}
-      - INTERNAL_API_HOST=${INTERNAL_API_URL} # Non-ideal, but the existing URL can't have https:// added because it's used for nginx conf
-      - AIRBYTE_API_HOST=${AIRBYTE_API_HOST}
-      - LOG_LEVEL=${LOG_LEVEL}
-    networks:
-      - airbyte_internal
-    depends_on:
-      bootloader:
-        condition: service_completed_successfully
-  airbyte-connector-builder-server:
-    image: airbyte/connector-builder-server:${VERSION}
-    logging: *default-logging
-    container_name: airbyte-connector-builder-server
-    restart: unless-stopped
-    ports:
-      - 80
-    environment:
-      - AIRBYTE_VERSION=${VERSION}
-      - CDK_VERSION=${CDK_VERSION}
-      - DEPLOYMENT_MODE=${DEPLOYMENT_MODE}
-      - PYTHON_VERSION=${PYTHON_VERSION}
-    networks:
-      - airbyte_internal
-    depends_on:
-      bootloader:
-        condition: service_completed_successfully
+  # airbyte-api-server:
+  #   image: airbyte/airbyte-api-server:${VERSION}
+  #   logging: *default-logging
+  #   container_name: airbyte-api-server
+  #   restart: unless-stopped
+  #   ports:
+  #     - "8006"
+  #   environment:
+  #     - AIRBYTE_VERSION=${VERSION}
+  #     - DEPLOYMENT_MODE=${DEPLOYMENT_MODE}
+  #     - INTERNAL_API_HOST=${INTERNAL_API_URL} # Non-ideal, but the existing URL can't have https:// added because it's used for nginx conf
+  #     - AIRBYTE_API_HOST=${AIRBYTE_API_HOST}
+  #     - LOG_LEVEL=${LOG_LEVEL}
+  #   networks:
+  #     - airbyte_internal
+  #   depends_on:
+  #     bootloader:
+  #       condition: service_completed_successfully
+  # airbyte-connector-builder-server:
+  #   image: airbyte/connector-builder-server:${VERSION}
+  #   logging: *default-logging
+  #   container_name: airbyte-connector-builder-server
+  #   restart: unless-stopped
+  #   ports:
+  #     - 80
+  #   environment:
+  #     - AIRBYTE_VERSION=${VERSION}
+  #     - CDK_VERSION=${CDK_VERSION}
+  #     - DEPLOYMENT_MODE=${DEPLOYMENT_MODE}
+  #     - PYTHON_VERSION=${PYTHON_VERSION}
+  #   networks:
+  #     - airbyte_internal
+  #   depends_on:
+  #     bootloader:
+  #       condition: service_completed_successfully
   airbyte-proxy:
     image: airbyte/proxy:${VERSION}
     container_name: airbyte-proxy
