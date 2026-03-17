@@ -1,11 +1,5 @@
 :80 {
-    # Basic Auth cho quyền cá nhân
-    basicauth / {
-        {$BASIC_AUTH_USERNAME} {$BASIC_AUTH_PASSWORD_HASH}
-    }
-
-    # Proxy vào giao diện web (cũng là cổng vào API nội bộ)
+    # Bỏ Basic Auth của Caddy để bạn dùng Basic Auth thẳng trên Dokploy cho nhanh
     reverse_proxy webapp:80
-
     encode zstd gzip
 }
