@@ -19,7 +19,7 @@ services:
       - ./data:/data
       - ./sites:/srv
     ports:
-      - "8080:80"
+      - "18080:80"
     networks:
       - airbyte_internal
     
