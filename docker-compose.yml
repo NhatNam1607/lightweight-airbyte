@@ -6,7 +6,7 @@ x-logging: &default-logging
     max-file: "5"
   driver: json-file
 services:
-  addy:
+  caddy:
     container_name: caddy   
     image: caddy:alpine
     restart: always
