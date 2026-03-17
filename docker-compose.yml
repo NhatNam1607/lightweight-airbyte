@@ -17,7 +17,7 @@ services:
       - "18080:80"
     environment:
       - BASIC_AUTH_USERNAME=${BASIC_AUTH_USERNAME}
-      - BASIC_AUTH_PASSWORD_HASH=${BASIC_AUTH_PASSWORD_HASH}
+      - "BASIC_AUTH_PASSWORD_HASH=${BASIC_AUTH_PASSWORD_HASH}"
     networks:
       - airbyte_internal
 
@@ -149,6 +149,8 @@ services:
       - INTERNAL_API_HOST=server:8001
       - CONNECTOR_BUILDER_API_HOST=server:8001
       - AIRBYTE_API_HOST=server:8006
+      - KEYCLOAK_INTERNAL_HOST=server:8001
+      - KEYCLOAK_INTERNAL_URL=http://server:8001
     networks:
       - airbyte_internal
     depends_on:
